@@ -120,6 +120,27 @@ footer{position:relative;z-index:10;text-align:center;padding:40px 20px 64px;bor
 .f-title em{font-style:italic;color:var(--rose);}
 .f-sub{font-family:'Lora',serif;font-style:italic;font-size:.88rem;color:var(--mid);margin-bottom:16px;}
 .f-small{font-family:'DM Sans',sans-serif;font-size:.6rem;font-weight:300;letter-spacing:.28em;text-transform:uppercase;color:var(--mauve);opacity:.6;}
+/* CONTACT SECTION */
+.contact-wrap{position:relative;z-index:10;max-width:720px;margin:0 auto 80px;padding:0 24px;}
+.contact-card{background:rgba(35,22,65,.72);backdrop-filter:blur(16px);border:1px solid rgba(200,170,240,.28);border-radius:20px;padding:40px 40px 36px;}
+.contact-title{font-family:'Playfair Display',serif;font-weight:700;font-size:1.5rem;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em;}
+.contact-title em{font-style:italic;color:var(--rose);}
+.contact-sub{font-family:'Lora',serif;font-style:italic;font-size:.88rem;color:var(--mid);margin-bottom:28px;}
+.contact-form{display:flex;flex-direction:column;gap:14px;}
+.cf-input{background:rgba(255,255,255,.06);border:1px solid rgba(200,170,240,.25);border-radius:10px;padding:12px 16px;font-family:'Lora',serif;font-size:.9rem;color:var(--ink);outline:none;transition:border-color .25s;}
+.cf-input:focus{border-color:rgba(200,112,168,.6);}
+.cf-input::placeholder{color:var(--mid);opacity:.7;}
+textarea.cf-input{resize:vertical;min-height:120px;}
+.cf-btn{background:linear-gradient(135deg,rgba(200,112,168,.3),rgba(152,120,184,.3));border:1px solid rgba(200,112,168,.45);border-radius:50px;padding:12px 28px;font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);cursor:pointer;transition:all .25s;align-self:flex-start;}
+.cf-btn:hover{background:linear-gradient(135deg,rgba(200,112,168,.5),rgba(152,120,184,.5));transform:translateY(-2px);box-shadow:0 8px 24px rgba(100,60,180,.25);}
+.cf-success{display:none;font-family:'Lora',serif;font-style:italic;font-size:.92rem;color:var(--rose);text-align:center;padding:12px 0;}
+.contact-divider{display:flex;align-items:center;gap:14px;margin:24px 0;}
+.contact-divider span{font-family:'DM Sans',sans-serif;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--mid);}
+.contact-divider i{flex:1;height:1px;background:rgba(200,170,240,.18);}
+.ig-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,rgba(200,112,168,.15),rgba(152,120,184,.15));border:1px solid rgba(200,170,240,.22);border-radius:50px;padding:12px 24px;text-decoration:none;font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--soft);transition:all .25s;}
+.ig-btn:hover{background:linear-gradient(135deg,rgba(200,112,168,.3),rgba(152,120,184,.3));border-color:rgba(200,112,168,.45);color:var(--ink);transform:translateY(-2px);}
+.ig-icon{width:18px;height:18px;flex-shrink:0;}
+@media(max-width:540px){.contact-card{padding:28px 22px 24px;}.cf-btn{align-self:stretch;text-align:center;}}
 </style>
 </head>
 <body>
@@ -138,7 +159,7 @@ footer{position:relative;z-index:10;text-align:center;padding:40px 20px 64px;bor
 <header>
   <p class="eyebrow">A Journal of Physics &amp; Wonder</p>
   <h1 class="logo">Cosmic <em>Echoes</em></h1>
-  <p class="tagline" id="site-tagline">where equations bloom like flowers</p>
+  <p class="tagline" id="site-tagline">For the theories that should be nervous</p>
   <div class="hdiv"><i></i><div class="hd"></div><div class="hdb"></div><div class="hd"></div><i></i></div>
 </header>
 
@@ -155,7 +176,7 @@ footer{position:relative;z-index:10;text-align:center;padding:40px 20px 64px;bor
     <!-- avatar injected by JS from settings -->
     <div>
       <div class="aname" id="about-name">Hi, I'm Pragati ✦</div>
-      <div class="abio" id="about-bio">Astrophysics student at Texas Tech University, fascinated by the universe and the forces that shape it. I write about cosmology, dark matter, quantum mechanics, and the mysteries of space-time. When I'm not studying the cosmos, I enjoy reading &amp; dancing.</div>
+      <div class="abio" id="about-bio">Astrophysics student at Texas Tech University — part-time dancer, full-time troublemaker. I study the universe's rules so I could question each of them. Currently doing research at NoVA. Writing is how I think; I don't write about physics to explain it, I write to argue with it, and somewhere in that argument, things start to make sense. So, when physics gives me rules, I give it resistance.</div>
     </div>
   </div>
 </div>
@@ -165,9 +186,32 @@ footer{position:relative;z-index:10;text-align:center;padding:40px 20px 64px;bor
   <div id="posts-list"></div>
 </main>
 
+<div class="contact-wrap">
+  <div class="contact-card">
+    <div class="contact-title">Leave a <em>Message</em></div>
+    <div class="contact-sub">A thought, a question, or just a hello — I'd love to hear from you ✦</div>
+    <form class="contact-form" id="contact-form" action="https://formspree.io/f/mykbzzae" method="POST">
+      <input class="cf-input" type="text" name="name" placeholder="Your name" required>
+      <input class="cf-input" type="email" name="email" placeholder="Your email (optional)">
+      <textarea class="cf-input" name="message" placeholder="Your message..." required></textarea>
+      <button class="cf-btn" type="submit">Send Message →</button>
+    </form>
+    <div class="cf-success" id="cf-success">Thank you — your message found its way to me ✦</div>
+    <div class="contact-divider"><i></i><span>or find me on</span><i></i></div>
+    <a class="ig-btn" href="https://instagram.com/heypragss_" target="_blank" rel="noopener">
+      <svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/>
+      </svg>
+      @heypragss_
+    </a>
+  </div>
+</div>
+
 <footer>
   <div class="f-title">Cosmic <em>Echoes</em></div>
-  <div class="f-sub" id="footer-sub">every equation is a love letter to the universe</div>
+  <div class="f-sub" id="footer-sub">A record of physics misbehaving</div>
   <div class="f-small">Pragati · Texas Tech University · Astrophysics</div>
 </footer>
 
@@ -288,6 +332,28 @@ function getArt(tag){
    FULL UNCUT ARTICLES from Blogspot
 ══════════════════════════════════════ */
 var SEED=[
+
+{
+  id: 7,                          // increment from last post (currently 6)
+  tag: 'Big Questions',                 // pick one: 'Dark Matter', 'Cosmology', 'Quantum',
+                                  // 'Relativity', 'Thermodynamics', 'Astrophysics',
+                                  // 'Nuclear', 'Philosophy', 'Particle Physics',
+                                  // 'String Theory', 'Consciousness'
+  color: 'blush',                   // pick one: 'blush', 'lav', 'sky', 'sage', 'peach'
+  date: '2026-03-26',             // YYYY-MM-DD format
+  title: 'The Wrong Physics',
+  excerpt: 'Every “fact” we once treated as solid now dissolves into a theory, and every theory carries the quiet warning that it, too, might be temporary. You wake up one morning and see headlines everywhere saying that the most fundamental concept we’ve been studying, using, trusting, is actually not true. Collapse of the very foundation we built everything else on. But the universe stayed silent. No wind. No medium. No cosmic ocean. Some physicists talk about it quietly, almost like they’re afraid the universe might overhear them.',
+  img: '',                        // leave empty to use auto-generated SVG art
+  body:`What if today’s physics is just another one of those mistakes? 
+What if we’re still living inside a story that will soon be rewritten? 
+
+Studying physics feels like discovering, again and again, how wrong things can be. Half the concepts feel unreasonable, almost suspicious. And the worst part is that we’re not even working with certainties — we’re working with probabilities, with mathematical shadows of reality, not the thing itself. Every “fact” we once treated as solid now dissolves into a theory, and every theory carries the quiet warning that it, too, might be temporary. History keeps reminding us that our understanding is limited, that we’re still behind, still fumbling in the dark. So I wonder how it would feel — as physics people — to wake up one morning and see headlines everywhere saying that the most fundamental concept we’ve been studying, using, trusting, is actually not true. Not just a small correction, but the collapse of the very foundation we built everything else on. Honestly, whenever I learn a new concept, my first instinct is always the same: why is this this way? what if it’s wrong? I barely know ten percent of physics, but something in every idea I’ve learned so far whispers that something is missing — a negative intuition I can’t shake.
+Let me take you back to the ether world. Imagine the confidence physicists had back then — the absolute certainty that they finally understood light. They had cracked optics wide open; they just needed to figure out what the ether was, this invisible ocean that light waves supposedly rippled through. It felt elegant, inevitable, almost poetic. Waves needed a medium; light was a wave; therefore, ether must exist. They pictured Earth drifting through this cosmic substance, stirring up an “ether wind,” and they built exquisitely sensitive instruments to detect it. But the universe stayed silent. No wind. No medium. No cosmic ocean. The ether was a ghost — a theory that felt right until the moment it didn’t. And if you’re an expert reading this and feeling offended, I’m sorry, but I’m not wrong about how right scientists believed they were back then. That confidence was real. And it vanished overnight.
+Now look at one of the concepts that feels wrong to us: the vacuum. We call it empty space, but nothing about it behaves like emptiness. Quantum physics tells us the vacuum flickers with virtual particles, restless and unpredictable, appearing and disappearing faster than we can measure. A nothingness that refuses to be nothing. A silence that hums beneath everything. And honestly, I’ve always felt that emptiness should never be trusted — there is always a mystery in nothing. If there were truly nothing, we wouldn’t need a concept for it at all. The fact that we do means something is hiding there, something we haven’t understood yet, something that might one day make our entire picture of physics look as naive as the ether did.
+And if the vacuum already feels suspicious, then the next idea feels even more unsettling — the possibility that all of this strangeness is not random at all but structured. Some physicists talk about it quietly, almost like they’re afraid the universe might overhear them. The idea that reality might be computational — the idea known as the Simulation Hypothesis. Not in the dramatic science fiction sense, but in the sense that space and time might be pixelated at the smallest scales, that the universe has a finite information capacity, that quantum randomness might be algorithmic rather than truly random. It’s eerie how often the equations behave like update rules, how quantum events resemble sampling from a probability distribution, how the speed of light looks suspiciously like a maximum processing rate. Sometimes it feels like physics is glitching, like the universe is showing us seams we were never meant to notice. Because if the vacuum isn’t empty, and the ether wasn’t real, and our most trusted theories keep collapsing every few decades, then maybe the problem isn’t the theories at all — maybe we’re studying the shadows instead of the source.
+So let me leave you with something real to think about. We treat the Uncertainty Principle as if it's untouchable, as if it's the universe's final word on what we can and cannot know. But imagine, just for a moment, that someday it gets proven wrong. Not explained, not adjusted — wrong. **What do you think the loophole would be? What would someone have to discover to break a rule we've treated as sacred for a century.** And if certainty returned to the smallest scales, which parts of our physics would collapse with it, and what would that reveal about everything we thought we understood.`
+
+},
   {id:1,tag:'Dark Matter',color:'blush',date:'2025-07-11',
    title:'Is Dark Matter Real, or Are We Just Missing Something?',
    excerpt:"About 95% of the universe is made of something we can't see. We're almost certain it exists — yet we still don't know what it is. Here's why the mystery is so compelling.",
@@ -515,22 +581,22 @@ var posts, activeFilter='all';
 var DEFAULT_SETTINGS={
   avatarUrl:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhu5J5fnM7H5txe3cIoHVT5EridNDUXDVPGLS88sADwcjJuBm8w-Stfo3SWR_e4ITvkLuSlSzzGk_Z7fCDEKrpwEwxtwFh4aFMgedWABinQRjKu9OiAJHAdSY6tKlyB-V9e5Ad_S90yUP2GpaLcIgwVg3QsVZBZBJVL2D_95sm-3eFgMpk/s220/IMG_4490.jpeg',
   name:'Hi, I\'m Pragati ✦',
-  bio:'Astrophysics student at Texas Tech University, fascinated by the universe and the forces that shape it. I write about cosmology, dark matter, quantum mechanics, and the mysteries of space-time. When I\'m not studying the cosmos, I enjoy reading & dancing.',
-  tagline:'where equations bloom like flowers',
-  footerSub:'every equation is a love letter to the universe'
+  bio:'Astrophysics student at Texas Tech University — part-time dancer, full-time troublemaker. I study the universe\'s rules so I could question each of them. Currently doing research at NoVA. Writing is how I think — I don\'t write about physics to explain it, I write to argue with it, and somewhere in that argument, things start to make sense. So, when physics gives me rules, I give it resistance.',
+  tagline:'For the theories that should be nervous',
+  footerSub:'A record of physics misbehaving'
 };
 
 function loadSettings(){
   try{
-    var s=localStorage.getItem('CE_settings');
-    return s?Object.assign({},DEFAULT_SETTINGS,JSON.parse(s)):DEFAULT_SETTINGS;
-  }catch(e){return DEFAULT_SETTINGS;}
+    localStorage.removeItem('CE_settings');
+  }catch(e){}
+  return DEFAULT_SETTINGS;
 }
 
 function load(){
   try{
-    var r=localStorage.getItem('CE3_posts');
-    posts=r?JSON.parse(r):SEED.map(function(p){return Object.assign({},p);});
+    localStorage.removeItem('CE3_posts');
+    posts=SEED.map(function(p){return Object.assign({},p);});
   }catch(e){posts=SEED.map(function(p){return Object.assign({},p);});}
 
   var s=loadSettings();
@@ -616,7 +682,17 @@ function bodyToHTML(raw){
     if(!t){if(inUL){out+='</ul>';inUL=false;}return;}
     if(t.startsWith('## ')){if(inUL){out+='</ul>';inUL=false;}out+='<span class="m-h">'+esc(t.slice(3))+'</span>';}
     else if(t.startsWith('• ')||t.startsWith('* ')){if(!inUL){out+='<ul>';inUL=true;}out+='<li>'+esc(t.slice(2))+'</li>';}
-    else{if(inUL){out+='</ul>';inUL=false;}if(firstP){out+='<p class="lede">'+esc(t)+'</p>';firstP=false;}else out+='<p>'+esc(t)+'</p>';}
+    else{
+      if(inUL){out+='</ul>';inUL=false;}
+      var parts=t.split(/\*\*([^*]+)\*\*/g);
+      var formatted='';
+      parts.forEach(function(part,i){
+        if(i%2===1){formatted+='<strong style="color:#c870a8;font-style:italic;font-weight:700;">'+esc(part)+'</strong>';}
+        else{formatted+=esc(part);}
+      });
+      if(firstP){out+='<p class="lede">'+formatted+'</p>';firstP=false;}
+      else out+='<p>'+formatted+'</p>';
+    }
   });
   if(inUL)out+='</ul>';
   return out;
@@ -629,7 +705,8 @@ function openR(id){
     '<div class="m-tag">'+esc(p.tag)+'</div>'+
     '<div class="m-date">'+fmtDate(p.date)+'</div>'+
     '<h2 class="m-title">'+esc(p.title)+'</h2>'+
-    visual+'<div class="m-body">'+bodyToHTML(p.body)+'</div>';
+    visual+'<div class="m-body">'+bodyToHTML(p.body)+'</div>'+
+'<p style="font-family:\'Lora\',serif;font-style:italic;font-size:.92rem;color:var(--rose);border-top:1px solid rgba(200,170,240,.2);margin-top:2em;padding-top:1.4em;">I would really love to hear your thoughts on this — <a href="#" onclick="closeR();setTimeout(function(){document.querySelector(\'.contact-wrap\').scrollIntoView({behavior:\'smooth\'})},300);return false;" style="color:var(--rose);text-decoration:underline;text-underline-offset:3px;">leave me a message</a> ✦</p>';
   document.getElementById('rov').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -637,6 +714,18 @@ function closeR(){document.getElementById('rov').classList.remove('open');docume
 function filterBucket(b){activeFilter=b;render();document.querySelector('main').scrollIntoView({behavior:'smooth'});}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeR();});
 load();render();
+// Contact form handler
+document.getElementById('contact-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  var form=this;
+  fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}})
+    .then(function(r){
+      if(r.ok){
+        form.style.display='none';
+        document.getElementById('cf-success').style.display='block';
+      }
+    });
+});
 </script>
 </body>
 </html>
