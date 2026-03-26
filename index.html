@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmic Echoes — Pragati</title>
+<meta name="description" content="A journal of physics and wonder by Pragati, astrophysics student at Texas Tech University.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rose:#c870a8;--mauve:#9878b8;--ink:#ede8f8;--soft:#c0b0d8;--mid:#8878a8;
+  --border:rgba(200,170,240,.25);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#16112a;color:var(--ink);font-family:'Lora',Georgia,serif;font-size:17px;line-height:1.75;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 55% at 8% 10%,  rgba(140,80,200,.28) 0%,transparent 58%),
+    radial-gradient(ellipse 60% 70% at 93% 5%,   rgba(80,120,210,.22) 0%,transparent 55%),
+    radial-gradient(ellipse 65% 50% at 50% 96%,  rgba(180,80,160,.18) 0%,transparent 58%),
+    radial-gradient(ellipse 45% 40% at 80% 62%,  rgba(60,140,200,.14) 0%,transparent 50%),
+    radial-gradient(ellipse 35% 35% at 25% 55%,  rgba(100,60,180,.12) 0%,transparent 50%);}
+.sp{position:fixed;border-radius:50%;opacity:0;animation:sp linear infinite;pointer-events:none;z-index:0;}
+@keyframes sp{0%{transform:translateY(108vh);opacity:0}8%{opacity:.45}90%{opacity:.18}100%{transform:translateY(-8vh);opacity:0}}
+
+/* HEADER */
+header{position:relative;z-index:10;text-align:center;padding:88px 24px 52px;border-bottom:1px solid rgba(200,170,240,.18);}
+.eyebrow{font-family:'DM Sans',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.48em;text-transform:uppercase;color:var(--rose);margin-bottom:22px;animation:fd 1s ease both;}
+.logo{font-family:'Playfair Display',serif;font-weight:800;font-size:clamp(3.6rem,10vw,7rem);line-height:.9;color:var(--ink);letter-spacing:-.03em;animation:fd 1s .1s ease both;}
+.logo em{font-style:italic;font-weight:700;color:var(--rose);display:inline-block;transform:translateY(4px);}
+.tagline{font-family:'Lora',serif;font-style:italic;font-size:1.05rem;color:var(--mid);margin-top:18px;animation:fd 1s .22s ease both;}
+.hdiv{display:flex;align-items:center;justify-content:center;gap:14px;margin:32px auto 0;animation:fd 1s .34s ease both;}
+.hdiv i{display:block;height:1px;width:72px;}
+.hdiv i:first-child{background:linear-gradient(to right,transparent,var(--rose));}
+.hdiv i:last-child{background:linear-gradient(to left,transparent,var(--rose));}
+.hd{width:5px;height:5px;border-radius:50%;background:var(--rose);}
+.hdb{width:7px;height:7px;border-radius:50%;background:var(--mauve);}
+@keyframes fd{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:translateY(0)}}
+
+/* NAV */
+nav{position:relative;z-index:10;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:28px 20px;border-bottom:1px solid rgba(200,170,240,.12);animation:fd 1s .44s ease both;}
+nav a{font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--soft);text-decoration:none;padding:6px 16px;border-radius:50px;border:1px solid transparent;transition:all .25s;}
+nav a:hover,nav a.active{background:rgba(200,112,168,.12);border-color:rgba(200,112,168,.35);color:var(--rose);}
+
+/* ABOUT */
+.about-wrap{position:relative;z-index:10;max-width:720px;margin:44px auto;padding:0 24px;animation:fd 1s .52s ease both;}
+.about-card{background:rgba(35,22,65,.72);backdrop-filter:blur(16px);border:1px solid rgba(200,170,240,.28);border-radius:20px;padding:24px 28px;display:flex;gap:20px;align-items:center;}
+.avatar{width:66px;height:66px;border-radius:50%;object-fit:cover;border:3px solid rgba(200,170,240,.5);flex-shrink:0;box-shadow:0 4px 18px rgba(100,60,180,.35);}
+.avatar-placeholder{width:66px;height:66px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(140,80,200,.5),rgba(80,120,210,.5));display:flex;align-items:center;justify-content:center;font-size:1.6rem;border:3px solid rgba(200,170,240,.4);}
+.aname{font-family:'Playfair Display',serif;font-size:1.08rem;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.abio{font-family:'Lora',serif;font-size:.82rem;line-height:1.65;color:var(--soft);}
+@media(max-width:540px){.about-card{flex-direction:column;text-align:center;}.avatar,.avatar-placeholder{width:80px;height:80px;}}
+
+/* MAIN */
+main{position:relative;z-index:10;max-width:1060px;margin:0 auto;padding:0 24px 100px;}
+.sec-label{font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:500;letter-spacing:.42em;text-transform:uppercase;color:var(--mauve);text-align:center;margin-bottom:36px;}
+#posts-list{display:flex;flex-direction:column;gap:0;}
+
+/* FEATURED */
+.post-featured{background:rgba(35,22,65,.72);backdrop-filter:blur(14px);border:1px solid rgba(200,170,240,.25);border-radius:24px;overflow:hidden;display:grid;grid-template-columns:1.1fr .9fr;min-height:340px;animation:cr .8s ease both;transition:box-shadow .38s,transform .38s;cursor:pointer;}
+.post-featured:hover{box-shadow:0 22px 58px rgba(100,60,180,.3);transform:translateY(-4px);}
+.pf-left{padding:46px 42px;display:flex;flex-direction:column;justify-content:center;}
+.pf-right{position:relative;overflow:hidden;min-height:220px;}
+.pf-right img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease;}
+.post-featured:hover .pf-right img{transform:scale(1.06);}
+.pf-art{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+.pf-art svg,.pc-art svg{width:100%;height:100%;}
+@media(max-width:700px){.post-featured{grid-template-columns:1fr;}.pf-right{min-height:200px;}}
+
+/* REGULAR CARD */
+.post-card{background:rgba(35,22,65,.72);backdrop-filter:blur(14px);border:1px solid rgba(200,170,240,.25);border-radius:20px;padding:30px 32px 28px;animation:cr .75s ease both;transition:box-shadow .35s,transform .35s;cursor:pointer;display:flex;gap:28px;align-items:flex-start;}
+.post-card:hover{box-shadow:0 16px 44px rgba(100,60,180,.25);transform:translateY(-3px);}
+.pc-thumb{width:120px;height:88px;border-radius:12px;object-fit:cover;flex-shrink:0;transition:transform .5s;}
+.post-card:hover .pc-thumb{transform:scale(1.05);}
+.pc-art{width:120px;height:88px;border-radius:12px;flex-shrink:0;overflow:hidden;}
+.pc-body{flex:1;min-width:0;}
+@media(max-width:600px){.post-card{flex-direction:column;}.pc-thumb,.pc-art{width:100%;height:160px;}}
+.post-divider{height:1px;background:linear-gradient(to right,transparent,rgba(200,170,240,.2),transparent);margin:6px 0;}
+@keyframes cr{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+/* TEXT */
+.p-tag{font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--rose);margin-bottom:6px;}
+.p-date{font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:300;letter-spacing:.12em;color:var(--mid);margin-bottom:10px;}
+.p-title{font-family:'Playfair Display',serif;font-weight:700;font-size:1.65rem;line-height:1.18;color:var(--ink);margin-bottom:12px;letter-spacing:-.01em;}
+.post-featured .p-title{font-size:clamp(1.5rem,3vw,2.15rem);}
+.p-excerpt{font-family:'Lora',serif;font-size:.88rem;line-height:1.8;color:var(--soft);}
+.p-more{font-family:'DM Sans',sans-serif;font-size:.64rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;display:inline-block;margin-top:18px;color:var(--mauve);border-bottom:1.5px solid var(--mauve);padding-bottom:2px;transition:color .28s,border-color .28s;}
+.post-featured:hover .p-more,.post-card:hover .p-more{color:var(--rose);border-color:var(--rose);}
+.acc-blush{border-left:3px solid rgba(200,150,220,.7);}
+.acc-lav  {border-left:3px solid rgba(152,120,184,.7);}
+.acc-sky  {border-left:3px solid rgba(80,150,220,.7);}
+.acc-sage {border-left:3px solid rgba(80,180,200,.7);}
+.acc-peach{border-left:3px solid rgba(208,184,216,.7);}
+
+/* READ MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(10,5,25,.55);backdrop-filter:blur(10px);z-index:100;align-items:flex-start;justify-content:center;padding:28px 20px;overflow-y:auto;}
+.ov.open{display:flex;animation:fIn .3s ease;}
+@keyframes fIn{from{opacity:0}to{opacity:1}}
+.modal{background:rgba(25,15,52,.97);border:1px solid rgba(200,170,240,.28);border-radius:24px;max-width:740px;width:100%;margin:auto;padding:56px 52px 52px;position:relative;animation:mR .4s cubic-bezier(.22,.8,.22,1);}
+@keyframes mR{from{opacity:0;transform:translateY(28px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:600px){.modal{padding:40px 26px 36px;}}
+.mx{position:absolute;top:20px;right:24px;background:none;border:none;font-size:1.4rem;color:var(--mauve);cursor:pointer;font-family:'Playfair Display',serif;transition:color .2s;line-height:1;}
+.mx:hover{color:var(--rose);}
+.m-tag{font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:var(--rose);margin-bottom:8px;}
+.m-date{font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:300;letter-spacing:.14em;color:var(--mid);margin-bottom:16px;}
+.m-title{font-family:'Playfair Display',serif;font-weight:800;font-size:clamp(1.7rem,4.5vw,2.5rem);line-height:1.12;letter-spacing:-.02em;color:var(--ink);margin-bottom:28px;}
+.m-img{width:100%;max-height:300px;object-fit:cover;border-radius:14px;margin-bottom:32px;box-shadow:0 8px 30px rgba(100,60,180,.25);}
+.m-art{border-radius:14px;overflow:hidden;margin-bottom:32px;}
+.m-body{font-family:'Lora',serif;font-size:.96rem;line-height:1.88;color:var(--soft);}
+.m-body p{margin-bottom:1.2em;}
+.m-body .m-h{font-family:'Playfair Display',serif;font-weight:700;font-size:1.18rem;color:var(--ink);margin:1.8em 0 .6em;display:block;letter-spacing:-.01em;}
+.m-body ul{margin:.6em 0 1.2em 1.4em;}
+.m-body li{font-family:'Lora',serif;font-size:.93rem;line-height:1.78;margin-bottom:.4em;}
+.m-body .lede{font-size:1.06rem;line-height:1.82;color:var(--ink);font-weight:500;border-left:3px solid var(--rose);padding-left:18px;margin-bottom:1.4em;}
+
+/* FOOTER */
+footer{position:relative;z-index:10;text-align:center;padding:40px 20px 64px;border-top:1px solid rgba(200,170,240,.12);}
+.f-title{font-family:'Playfair Display',serif;font-weight:700;font-size:1.4rem;color:var(--ink);letter-spacing:-.01em;margin-bottom:8px;}
+.f-title em{font-style:italic;color:var(--rose);}
+.f-sub{font-family:'Lora',serif;font-style:italic;font-size:.88rem;color:var(--mid);margin-bottom:16px;}
+.f-small{font-family:'DM Sans',sans-serif;font-size:.6rem;font-weight:300;letter-spacing:.28em;text-transform:uppercase;color:var(--mauve);opacity:.6;}
+</style>
+</head>
+<body>
+
+<script>
+(function(){
+  var c=['#e8e0ff','#c8d8ff','#f0d8ff','#b8d8f8','#e8c8f0','#d0e0ff'];
+  for(var i=0;i<18;i++){
+    var el=document.createElement('div');el.className='sp';var s=Math.random()*9+3;
+    el.style.cssText='width:'+s+'px;height:'+s+'px;left:'+Math.random()*100+'vw;background:'+c[~~(Math.random()*c.length)]+';animation-duration:'+(11+Math.random()*20)+'s;animation-delay:'+Math.random()*16+'s';
+    document.body.appendChild(el);
+  }
+})();
+</script>
+
+<header>
+  <p class="eyebrow">A Journal of Physics &amp; Wonder</p>
+  <h1 class="logo">Cosmic <em>Echoes</em></h1>
+  <p class="tagline" id="site-tagline">where equations bloom like flowers</p>
+  <div class="hdiv"><i></i><div class="hd"></div><div class="hdb"></div><div class="hd"></div><i></i></div>
+</header>
+
+<nav id="mainnav">
+  <a href="#" onclick="filterBucket('all');return false;" class="active">All Posts</a>
+  <a href="#" onclick="filterBucket('universe');return false;">The Universe</a>
+  <a href="#" onclick="filterBucket('particles');return false;">Particles &amp; Forces</a>
+  <a href="#" onclick="filterBucket('spacetime');return false;">Space &amp; Time</a>
+  <a href="#" onclick="filterBucket('bigquestions');return false;">Big Questions</a>
+</nav>
+
+<div class="about-wrap">
+  <div class="about-card" id="about-card">
+    <!-- avatar injected by JS from settings -->
+    <div>
+      <div class="aname" id="about-name">Hi, I'm Pragati ✦</div>
+      <div class="abio" id="about-bio">Astrophysics student at Texas Tech University, fascinated by the universe and the forces that shape it. I write about cosmology, dark matter, quantum mechanics, and the mysteries of space-time. When I'm not studying the cosmos, I enjoy reading &amp; dancing.</div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <p class="sec-label" id="seclabel">All Entries</p>
+  <div id="posts-list"></div>
+</main>
+
+<footer>
+  <div class="f-title">Cosmic <em>Echoes</em></div>
+  <div class="f-sub" id="footer-sub">every equation is a love letter to the universe</div>
+  <div class="f-small">Pragati · Texas Tech University · Astrophysics</div>
+</footer>
+
+<!-- Read modal -->
+<div class="ov" id="rov" onclick="if(event.target===this)closeR()">
+  <div class="modal"><button class="mx" onclick="closeR()">✕</button><div id="rcontent"></div></div>
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   SVG ART — dark palette
+══════════════════════════════════════ */
+var ART={
+  'The Universe':`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+    <defs><radialGradient id="ug" cx="30%" cy="50%" r="70%"><stop offset="0%" stop-color="#2a1248"/><stop offset="100%" stop-color="#16112a"/></radialGradient></defs>
+    <rect width="300" height="200" fill="url(#ug)"/>
+    <circle cx="85" cy="100" r="20"  fill="none" stroke="rgba(200,112,168,.75)" stroke-width="2"/>
+    <circle cx="85" cy="100" r="44"  fill="none" stroke="rgba(200,112,168,.55)" stroke-width="1.5"/>
+    <circle cx="85" cy="100" r="72"  fill="none" stroke="rgba(200,112,168,.35)" stroke-width="1.2"/>
+    <circle cx="85" cy="100" r="104" fill="none" stroke="rgba(200,112,168,.2)"  stroke-width="1"/>
+    <circle cx="85" cy="100" r="140" fill="none" stroke="rgba(200,112,168,.1)"  stroke-width=".8"/>
+    <circle cx="85" cy="100" r="6" fill="rgba(200,112,168,.95)"/>
+    <circle cx="85" cy="100" r="2.5" fill="#fff" opacity=".9"/>
+    <text x="220" y="82" font-family="Georgia,serif" font-size="26" font-weight="700" font-style="italic" fill="rgba(152,120,184,.22)" text-anchor="middle">H₀</text>
+    <circle cx="210" cy="42" r="1.5" fill="rgba(200,170,240,.65)"/>
+    <circle cx="265" cy="72" r="1"   fill="rgba(200,112,168,.5)"/>
+    <circle cx="245" cy="158" r="1.3" fill="rgba(200,170,240,.45)"/>
+    <circle cx="280" cy="130" r="1.2" fill="rgba(200,170,240,.5)"/>
+  </svg>`,
+  'Particles & Forces':`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+    <defs><radialGradient id="pg" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#221448"/><stop offset="100%" stop-color="#16112a"/></radialGradient></defs>
+    <rect width="300" height="200" fill="url(#pg)"/>
+    <rect x="58"  y="18" width="60" height="8" fill="rgba(152,120,184,.5)" rx="2"/>
+    <rect x="182" y="18" width="60" height="8" fill="rgba(152,120,184,.5)" rx="2"/>
+    <rect x="118" y="18" width="8"  height="68" fill="rgba(200,112,168,.55)" rx="2"/>
+    <rect x="174" y="18" width="8"  height="68" fill="rgba(200,112,168,.55)" rx="2"/>
+    <rect x="141" y="100" width="18" height="82" fill="rgba(200,112,168,.6)"  rx="2"/>
+    <rect x="114" y="108" width="11" height="66" fill="rgba(200,112,168,.38)" rx="2"/>
+    <rect x="175" y="108" width="11" height="66" fill="rgba(200,112,168,.38)" rx="2"/>
+    <rect x="91"  y="120" width="8"  height="50" fill="rgba(200,112,168,.22)" rx="2"/>
+    <rect x="201" y="120" width="8"  height="50" fill="rgba(200,112,168,.22)" rx="2"/>
+    <rect x="72"  y="132" width="5"  height="34" fill="rgba(200,112,168,.12)" rx="2"/>
+    <rect x="223" y="132" width="5"  height="34" fill="rgba(200,112,168,.12)" rx="2"/>
+    <text x="265" y="60" font-family="Georgia,serif" font-size="36" font-weight="700" fill="rgba(152,120,184,.2)" text-anchor="middle">Ψ</text>
+  </svg>`,
+  'Space & Time':`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+    <defs><radialGradient id="sg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a1842"/><stop offset="100%" stop-color="#16112a"/></radialGradient></defs>
+    <rect width="300" height="200" fill="url(#sg)"/>
+    <g stroke="rgba(152,120,184,.3)" stroke-width=".8" fill="none">
+      <path d="M10,38  Q150,40  290,38"/><path d="M10,62  Q150,70  290,62"/>
+      <path d="M10,82  Q150,108 290,82"/><path d="M10,100 Q150,135 290,100"/>
+      <path d="M10,118 Q150,108 290,118"/><path d="M10,138 Q150,130 290,138"/>
+      <path d="M10,162 Q150,160 290,162"/>
+      <path d="M58,10  Q60,100  58,190"/><path d="M98,10  Q106,100 98,190"/>
+      <path d="M128,10 Q146,100 128,190"/><path d="M150,10 Q150,100 150,190"/>
+      <path d="M172,10 Q154,100 172,190"/><path d="M202,10 Q194,100 202,190"/>
+      <path d="M242,10 Q240,100 242,190"/>
+    </g>
+    <circle cx="150" cy="100" r="15" fill="rgba(200,112,168,.5)"/>
+    <circle cx="150" cy="100" r="7"  fill="rgba(200,112,168,.9)"/>
+    <circle cx="150" cy="100" r="3"  fill="#fff" opacity=".8"/>
+    <text x="252" y="180" font-family="Georgia,serif" font-size="15" font-style="italic" font-weight="700" fill="rgba(152,120,184,.28)" text-anchor="middle">E=mc²</text>
+  </svg>`,
+  'Big Questions':`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+    <defs><radialGradient id="bg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3a1a5a"/><stop offset="100%" stop-color="#16112a"/></radialGradient></defs>
+    <rect width="300" height="200" fill="url(#bg2)"/>
+    <ellipse cx="150" cy="100" rx="115" ry="58" fill="none" stroke="rgba(152,120,184,.3)"  stroke-width="1"   stroke-dasharray="4 3"/>
+    <ellipse cx="150" cy="100" rx="80"  ry="40" fill="none" stroke="rgba(152,120,184,.45)" stroke-width="1.2" stroke-dasharray="3 4"/>
+    <ellipse cx="150" cy="100" rx="50"  ry="24" fill="none" stroke="rgba(200,112,168,.6)"  stroke-width="1.5"/>
+    <ellipse cx="150" cy="100" rx="20"  ry="9"  fill="rgba(200,112,168,.45)"/>
+    <circle  cx="150" cy="100" r="5" fill="rgba(200,112,168,.9)"/>
+    <circle cx="60"  cy="35"  r="1.5" fill="rgba(200,170,240,.7)"/>
+    <circle cx="230" cy="55"  r="1"   fill="rgba(200,112,168,.6)"/>
+    <circle cx="80"  cy="155" r="1.2" fill="rgba(200,170,240,.5)"/>
+    <circle cx="248" cy="162" r="1.5" fill="rgba(200,112,168,.5)"/>
+    <circle cx="38"  cy="92"  r="1"   fill="rgba(200,170,240,.6)"/>
+    <circle cx="272" cy="108" r="1.3" fill="rgba(200,112,168,.5)"/>
+    <text x="238" y="178" font-family="Georgia,serif" font-size="44" font-weight="700" fill="rgba(152,120,184,.18)" text-anchor="middle">?</text>
+  </svg>`,
+  'default':`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+    <defs><radialGradient id="dg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#2a1550"/><stop offset="100%" stop-color="#16112a"/></radialGradient></defs>
+    <rect width="300" height="200" fill="url(#dg)"/>
+    <ellipse cx="150" cy="100" rx="96" ry="40" fill="none" stroke="rgba(152,120,184,.38)" stroke-width="1.2" transform="rotate(-20 150 100)"/>
+    <ellipse cx="150" cy="100" rx="96" ry="40" fill="none" stroke="rgba(152,120,184,.28)" stroke-width="1"   transform="rotate(40 150 100)"/>
+    <ellipse cx="150" cy="100" rx="96" ry="40" fill="none" stroke="rgba(200,112,168,.32)" stroke-width="1"   transform="rotate(100 150 100)"/>
+    <circle cx="150" cy="100" r="10" fill="rgba(200,112,168,.55)"/>
+    <circle cx="150" cy="100" r="5"  fill="rgba(200,112,168,.9)"/>
+    <circle cx="246" cy="100" r="4" fill="rgba(152,120,184,.75)"/>
+    <circle cx="102" cy="58"  r="4" fill="rgba(152,120,184,.75)"/>
+    <circle cx="102" cy="142" r="4" fill="rgba(152,120,184,.75)"/>
+    <text x="252" y="178" font-family="Georgia,serif" font-size="30" fill="rgba(152,120,184,.2)" text-anchor="middle">∞</text>
+  </svg>`
+};
+
+/* bucket map — broad categories each post belongs to */
+var BUCKET_MAP={
+  'Dark Matter':    'universe',
+  'Cosmology':      'universe',
+  'Quantum':        'particles',
+  'Relativity':     'spacetime',
+  'Thermodynamics': 'spacetime',
+  'Astrophysics':   'universe',
+  'Nuclear':        'particles',
+  'Philosophy':     'bigquestions',
+  'Particle Physics':'particles',
+  'String Theory':  'bigquestions',
+  'Consciousness':  'bigquestions'
+};
+function getBucket(tag){return BUCKET_MAP[tag]||'bigquestions';}
+function getArt(tag){
+  if(tag==='Dark Matter'||tag==='Cosmology'||tag==='Astrophysics') return ART['The Universe'];
+  if(tag==='Quantum'||tag==='Nuclear'||tag==='Particle Physics')   return ART['Particles & Forces'];
+  if(tag==='Relativity'||tag==='Thermodynamics')                   return ART['Space & Time'];
+  return ART['Big Questions'];
+}
+
+/* ══════════════════════════════════════
+   FULL UNCUT ARTICLES from Blogspot
+══════════════════════════════════════ */
+var SEED=[
+  {id:1,tag:'Dark Matter',color:'blush',date:'2025-07-11',
+   title:'Is Dark Matter Real, or Are We Just Missing Something?',
+   excerpt:"About 95% of the universe is made of something we can't see. We're almost certain it exists — yet we still don't know what it is. Here's why the mystery is so compelling.",
+   img:'',
+   body:`About 95% of the universe is made up of something we can't see — what we call dark matter (and dark energy, but that's for another post). What's fascinating is that we still don't know what dark matter actually is, yet we're almost certain it exists. Why? Because without it, much of what we observe in the cosmos simply doesn't make sense.
+
+## When Physics Seemed Complete
+
+By the early 20th century, physics had a strong foundation: Newtonian mechanics, Einstein's relativity, and quantum mechanics. Astronomers understood stellar motion and gravity well enough that the universe seemed predictable — until they looked more closely at galaxy clusters and spiral galaxies.
+
+## The First Clue: Zwicky's Missing Mass
+
+In 1933, Fritz Zwicky studied the Coma Cluster and found that galaxies were moving too fast to be held together by visible matter. According to Newtonian gravity, they should have flown apart. He proposed the existence of unseen mass — what he called "dark matter." At the time, the idea was too radical and largely ignored.
+
+## The Breakthrough: Vera Rubin's Rotation Curves
+
+In the 1970s, Vera Rubin and Kent Ford observed that stars at the edges of spiral galaxies were orbiting just as fast as those near the center — defying expectations. The only explanation was that galaxies were surrounded by massive halos of invisible matter. This was the first strong observational evidence for dark matter.
+
+## Why Dark Matter Became Essential
+
+Dark matter helps explain:
+• Why galaxies don't fly apart
+• How large-scale cosmic structures formed
+• Gravitational lensing of distant light
+• Patterns in the cosmic microwave background (CMB)
+
+But here's the puzzle: if physics worked fine before, and we still haven't directly detected dark matter, could it be that we've misunderstood something more fundamental — like gravity itself?
+
+## Exploring the Alternatives
+
+Several alternative theories have been proposed:
+• MOND (Modified Newtonian Dynamics) — suggests Newton's laws break down at low accelerations. It explains galaxy rotation curves but struggles with lensing and CMB data.
+• TeVeS — a relativistic version of MOND that incorporates general relativity, but still falls short in precision.
+• Emergent Gravity — proposes gravity arises from quantum information, not as a fundamental force. Still early in development and lacks broad predictive power.
+
+## Why Dark Matter Still Leads
+
+Despite its mysteries, dark matter remains the best explanation because:
+• It fits a wide range of observations in one framework.
+• Simulations using dark matter match the universe's large-scale structure.
+• Multiple independent lines of evidence point to its presence.
+
+Still, science is about questioning assumptions. If we never detect a dark matter particle, we may need to rethink gravity itself. After all, black holes were once just a mathematical curiosity — until we saw one.
+
+Maybe dark matter is real. Or maybe we've been asking the wrong question all along.`},
+
+  {id:2,tag:'Cosmology',color:'lav',date:'2025-06-24',
+   title:'Are Constants Really Constant?',
+   excerpt:"We treat values like G, h, and π as fixed anchors of the universe. But a deeper look reveals a surprising question — are these constants actually constant?",
+   img:'',
+   body:`Throughout our journey in science and mathematics, we've been introduced to the concept of constants — unchanging values like the gravitational constant (G), Planck's constant (h), or the mathematical π. They're treated as fixed anchors of the universe, helping us make sense of how things behave. But a deeper look reveals a surprising question: are these constants actually constant?
+
+## The Hubble Constant as a Case Study
+
+Let's take the Hubble constant (H₀) as an example. This value represents the rate at which the universe is expanding. One of its practical uses is to estimate the age of the universe — roughly 1/H₀ gives a ballpark figure of about 14 billion years. But here's the catch: if this value gives 14 billion years today, it would still give 14 billion years a billion years from now unless we updated the constant. That feels paradoxical — how can the age of the universe remain the same unless the constant shifts?
+
+This leads to a broader thought. Many constants weren't so much "declared" by nature as they were discovered through our calculations. They often appear when scientists refine theories to match observations as closely as possible. These constants help align elegant math with messy reality.
+
+## What Happens When We See Farther?
+
+But what happens when we see farther? The observable universe may only be a fraction of what's truly out there. If future telescopes allow us to peer deeper, our calculations may shift, and constants like H₀ might need to adapt. In that sense, a constant can be less of an immutable truth and more of a placeholder for what we don't yet know.
+
+## Observer-Dependent Constants
+
+There's also an intriguing philosophical twist — what if a completely different form of intelligence tried to describe the universe? Their perception might lead to entirely different models, equations, and constants. So maybe constants aren't purely objective truths, but instead observer-dependent tools shaped by the limits of our instruments, cognition, and perspective.
+
+From this view, constants feel more like finely tuned bridges between theory and observation, rather than immutable laws written into the fabric of reality. And maybe that's not a flaw — it's part of the beauty of science: forever adapting, questioning, and reaching for a more complete picture of the cosmos.`},
+
+  {id:3,tag:'Relativity',color:'sky',date:'2025-06-15',
+   title:'Time Dilation and Its Impact on Our Understanding of Reality',
+   excerpt:"Time slows near massive objects — but it's not just clocks. Everything slows: your heartbeat, your thoughts, your very experience of the world. What does that mean for reality?",
+   img:'',
+   body:`As a physics student, I've often heard that time slows down near massive objects, but I've struggled with understanding what this truly means. While it's commonly said that "clocks slow down" in high-gravity environments, it seems almost unbelievable that spending just one or two years near such an object could correspond to decades passing on Earth. The key insight here is that it's not just clocks ticking slower — it's everything.
+
+## Everything Slows Down
+
+In a stronger gravitational field, all biological and physical processes slow down. Our heart rate decreases, neural activity slows, and bodily functions adjust to this new time frame. However, we wouldn't perceive this slowdown, because our brains would also be affected — meaning everything would feel normal from our own perspective. The fundamental laws governing biological rhythms, chemical reactions, and even atomic processes effectively redefine themselves according to the gravitational environment.
+
+## Is Time Even Fundamental?
+
+From this perspective, time may not be a fundamental property of the universe, but rather an emergent phenomenon — possibly a result of entropy. While it feels real, we might only experience it psychologically, not as an independent physical entity like matter or energy. This aligns with certain interpretations in quantum mechanics, where particles do not physically experience time, yet still undergo changes in state.
+
+## What Would "No Time" Mean?
+
+If time isn't fundamental, then many physical laws — such as velocity, acceleration, and causality — would need to be redefined. Without time, the concept of cause and effect becomes problematic, as we wouldn't be able to say "this happened before that" in a sequential way. Instead, events might exist in a superposition, where past, present, and future coexist simultaneously, much like quantum states.
+
+## Quantum Entanglement as Evidence
+
+Quantum entanglement further challenges the idea of sequential causality. When two entangled particles interact, any change in one immediately affects the other, without requiring a time delay. This suggests that some processes in nature might operate outside the conventional flow of time, supporting the idea that time itself is not a fundamental necessity.
+
+If this hypothesis is correct, then what we experience as "time" might simply be the transition between different quantum states, rather than an independently existing dimension. However, this raises deeper questions: Does quantum superposition mean we are limited to specific transitions rather than infinite possibilities? Could the passage of time simply be the way we interpret state changes rather than a separate entity guiding them?`},
+
+  {id:4,tag:'Cosmology',color:'peach',date:'2025-06-08',
+   title:'Why Do We Even Need the Big Bang to Explain Our Universe?',
+   excerpt:"We've never actually seen the Big Bang — not even with JWST. So how can we be sure it happened? And why couldn't the universe have simply always existed?",
+   img:'',
+   body:`Almost everyone has heard of the Big Bang at some point and imagined how incredible it must have been to give birth to such a vast universe. But have you ever wondered why we even need the Big Bang to explain things? After all, we've never actually seen it — not even with powerful telescopes like JWST — so how can we be sure something like that ever happened?
+
+If the universe could exist as a single point out of nowhere, then why couldn't it have simply existed forever in its current form? Could there have been another way for the universe to begin, other than the Big Bang? While we can never be 100% certain that the Big Bang happened exactly as we think, several physical theories require it for the universe to behave the way we observe today.
+
+## The Universe is Expanding — And Faster at Greater Distances
+
+Observations from modern telescopes show that the universe is expanding, and the farther away we look, the faster galaxies seem to be moving. This means that if we reverse this expansion in time, everything will eventually converge to a single point — suggesting a beginning.
+
+## Einstein's General Relativity Theory
+
+Einstein's general theory of relativity changed our understanding of gravity, showing that it's not just a force but a curve in spacetime. Initially, Einstein believed the universe was static, but when he applied his equations, they naturally led to a universe that was either expanding or contracting. Since a static universe was the prevailing belief, he introduced the cosmological constant to artificially force his equations to describe an unchanging universe. Later, when observations proved the universe was expanding, Einstein regretted this adjustment, calling it his "greatest blunder."
+
+## Cosmic Microwave Background (CMB) — The First Light
+
+The Cosmic Microwave Background is often called the first light of the universe. For the first 380,000 years after the Big Bang, the universe was so dense that light couldn't escape — it kept bouncing around within the hot plasma. But as the universe expanded and cooled, atoms formed, allowing light to travel freely for the first time.
+
+Based on calculations about the age, shape, dark matter, dark energy, and expansion rate of the universe, physicists predicted that if the Big Bang had occurred, there should be leftover radiation from that early period. When scientists searched for it using large telescopes, they found exactly what was predicted — the CMB, a faint glow of radiation spread across the sky.
+
+## The Problem with a Static Universe
+
+If the universe had always existed in its current form without a Big Bang, it would need a perfect balance of gravitational forces to prevent collapse or expansion. However, no known physical mechanism could maintain such an equilibrium indefinitely. The universe would either contract under gravity or expand due to energy, making a truly static universe unstable.
+
+## Conclusion
+
+These are some of the most convincing pieces of evidence supporting the Big Bang. However, since we have never directly seen the Big Bang, we can't say with absolute certainty that it happened exactly as we theorise. As technology advances, we may uncover new evidence or even develop alternative theories about the universe's origins. Until then, the Big Bang remains the best explanation we have for how everything began.`},
+
+  {id:5,tag:'Cosmology',color:'sage',date:'2025-05-31',
+   title:'"You Shouldn\'t Be Here — But You Are": 14 Cosmic Miracles',
+   excerpt:"Our existence is astonishingly improbable. If even a single cosmic event had unfolded differently, everything could have been completely altered. Here are 14 reasons to be amazed.",
+   img:'',
+   body:`Most people see their lives as ordinary, assuming that what they've experienced is commonplace and could happen to anyone. But in reality, existence itself is anything but normal — our presence in this universe is astonishingly improbable. If even a single cosmic event had unfolded differently, everything could have been completely altered. The universe isn't just the result of the Big Bang occurring and automatically producing the cosmos in a predictable way. If the Big Bang were to happen again, the universe wouldn't look the same.
+
+To prove this, here are 14 key steppingstones, inspired by Michael Mallary, that show just how unlikely it is that we are here at all.
+
+## 1. Six Kinds of Quarks
+
+Every particle in the universe contains two types of quarks, the fundamental building blocks of matter. After the Big Bang, the most expected scenario was the formation of only four types of quarks. If this had happened, the resulting particles and antiparticles would have annihilated each other, leaving nothing. Instead, six different quarks emerged — ensuring stable matter could form.
+
+## 2. CP Asymmetry
+
+Without charge-parity (CP) asymmetry, the Big Bang would have produced equal amounts of matter and antimatter, leading to total annihilation. Instead, for every billion antimatter particles created, a billion plus one matter particles formed. That "plus one" made all the difference, allowing our universe to exist.
+
+## 3. Just Enough Energy and Matter
+
+The density of the universe had to be just right — neither too much nor too little. If it had been higher, we would have experienced a Big Crunch, collapsing back into nothingness. If it had been lower, stars would never have formed, preventing the creation of galaxies and planets.
+
+## 4. The Right Amount of Lumpiness
+
+In the early universe, matter was spread out, but not perfectly evenly. This slight variation was enough to seed galaxy formation. Too smooth, and no galaxies would have formed; too clumpy, and enormous black holes would dominate everything.
+
+## 5. The Four Fundamental Forces
+
+These four forces — gravity, electromagnetism, strong nuclear force, and weak nuclear force — work in harmony to shape reality. Gravity holds us together, electromagnetism enables atoms and electricity, the strong force binds atomic nuclei, and the weak force powers nuclear reactions in stars. If even one of these forces were slightly different, life as we know it wouldn't exist.
+
+## 6. Protons Don't Quite Stick
+
+Inside the Sun, single hydrogen protons slowly fuse to form helium. If the nuclear force between protons were even half a percent stronger, this process would happen instantly, burning through fuel so fast that stars would die before life could evolve. If the force were weaker, stars like our Sun wouldn't generate enough energy to sustain life.
+
+## 7. Helium Nuclei Don't Stick Too Easily
+
+Helium doesn't immediately convert into carbon, which allows stars to sustain their nuclear reactions. If helium had burned too quickly, there would be no carbon — and no life.
+
+## 8. Excited Carbon and Calm Oxygen
+
+When three helium nuclei combine, they form carbon. Fortunately, carbon remains stable, ensuring its continued presence in the universe. Likewise, oxygen remains chemically calm, allowing complex molecules — including water — to form. Without this balance, life wouldn't be possible.
+
+## 9. Big Stars Explode
+
+Large stars eventually collapse and explode in supernovae, scattering heavy elements like oxygen, iron, and carbon into space. These elements are essential for forming planets — and us. Without supernova explosions, Earth wouldn't exist.
+
+## 10. Heavyweight Neutrons for Long-Lived Stars
+
+The neutron's mass plays a crucial role in keeping stars stable. If it had been lower, excessive heavy elements would have formed, creating a dramatically different universe.
+
+## 11. Long-Lived Protons
+
+If protons decayed quickly, all matter would eventually disappear, cutting the universe's lifespan short. Luckily, protons last for billions of years, keeping atoms and structures stable.
+
+## 12. Three-Dimensional Reality
+
+We exist in a three-dimensional universe — and that's fortunate. In a four-dimensional world, physics would behave chaotically, making stable molecules impossible. In a two-dimensional universe, basic processes like flowing water wouldn't work.
+
+## 13. The Wave Nature of Matter
+
+Matter behaves like both particles and waves, allowing it to resist being squeezed into small volumes. This prevents total collapse into black holes, ensuring that stars, planets, and people can exist instead of an endless void.
+
+## 14. Reclusive Particles That Enable Chemistry
+
+Particles like electrons are "reclusive" in the sense that they interact in specific ways, allowing atoms to form complex chemical bonds. Thanks to this behaviour, we have metals, organic compounds, and the rich diversity of materials needed for life.
+
+## Conclusion
+
+Everything about our universe — from the tiniest quarks to entire galaxies — had to align perfectly for life to be possible. If even one of these steppingstones had played out differently, the universe could have been lifeless, chaotic, or entirely different. So, calling life "ordinary" is not just inaccurate — it's an insult to the very improbability of our existence.
+
+We are here because of a cosmic series of fortunate events, proving that existence itself is anything but inevitable.`},
+
+  {id:6,tag:'Quantum',color:'lav',date:'2025-05-30',
+   title:'Quantum Teleportation Simulated: Scientists Open a Portal to Understanding Spacetime',
+   excerpt:"Physicists have successfully simulated a 'baby wormhole' capable of transferring quantum information. It's a small but extraordinary step toward understanding the deep link between quantum mechanics and spacetime.",
+   img:'',
+   body:`Imagine being able to travel to a planet 30 billion light years away in mere minutes or jumping back and forth through time — into the future or the past — whenever you please. Sounds like sci-fi, right? While such ideas have always lived in the realm of imagination, they may not remain there forever. In a groundbreaking achievement, physicists Maria Spiropulu from Caltech and Daniel Jafferis from Harvard, along with their team, have successfully simulated a "baby wormhole" using quantum loops. This wormhole is capable of transferring quantum information, or "qubits," marking a significant step toward understanding spacetime and quantum physics.
+
+## ER = EPR: The Key Conjecture
+
+This remarkable journey began by integrating two fundamental principles: ER and EPR. The ER (Einstein-Rosen Bridge), introduced by Albert Einstein and Nathan Rosen in 1935, describes a theoretical "bridge" or wormhole that connects two points in spacetime. Although fascinating, this wormhole is non-traversable and purely theoretical. Meanwhile, the EPR (Einstein-Podolsky-Rosen) paradox, also introduced in 1935, highlights the phenomenon of quantum entanglement — where two particles remain instantaneously connected, regardless of distance. In 2013, physicists Leonard Susskind and Juan Maldacena proposed the ER = EPR conjecture, suggesting that quantum entangled particles are linked by microscopic wormholes. This conjecture offers a profound connection between the quantum world and the geometry of spacetime.
+
+## The Holographic Principle
+
+While wormholes are three-dimensional objects, creating even a simplified version of one in a two-dimensional interface may seem counterintuitive. However, the holographic principle — which suggests that our universe is a three-dimensional projection of quantum information encoded on a two-dimensional surface — inspired the possibility of simulating a baby wormhole. Since wormholes and quantum entanglement are inherently connected, quantum computers became the natural tool for creating such a simulation.
+
+## Google's Sycamore Quantum Computer
+
+The research team utilised Google's Sycamore quantum computer, one of the most advanced quantum computing systems available today. By leveraging qubits stored in superconducting circuits, which can exist in multiple states simultaneously due to quantum superposition, the scientists implemented a protocol to simulate the dynamics of a theoretical wormhole. The process involved carefully manipulating entangled qubits to emulate wormhole-like behaviour and mathematically ensuring that the system reflected the properties of a theoretical wormhole.
+
+## What Was Actually Achieved
+
+Using this setup, the team successfully transmitted quantum information — the state of qubits — through the simulated wormhole. Interestingly, according to the ER principle, wormholes can theoretically become traversable when influenced by negative energy — a concept nonexistent in classical physics but integral to quantum physics. The experimental results demonstrated that quantum mechanics could replicate phenomena predicted by relativity, like wormhole dynamics. The researchers validated their findings by analysing the data and confirming that the information behaved as though it had traversed a wormhole.
+
+## Conclusion
+
+This groundbreaking experiment combined expertise from quantum mechanics, general relativity, and computational physics, supported by advanced algorithms and machine learning. While this isn't a wormhole we could physically traverse, it marks an exciting step forward in exploring the link between quantum mechanics and spacetime geometry. This "baby step" opens the door to new avenues in understanding quantum gravity and the universe's fundamental structure. And who knows what the future holds? The possibilities we imagine today became more likely when humanity first spoke its first words centuries ago.`}
+];
+
+/* ══════════════════════
+   STATE
+══════════════════════ */
+var posts, activeFilter='all';
+
+var DEFAULT_SETTINGS={
+  avatarUrl:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhu5J5fnM7H5txe3cIoHVT5EridNDUXDVPGLS88sADwcjJuBm8w-Stfo3SWR_e4ITvkLuSlSzzGk_Z7fCDEKrpwEwxtwFh4aFMgedWABinQRjKu9OiAJHAdSY6tKlyB-V9e5Ad_S90yUP2GpaLcIgwVg3QsVZBZBJVL2D_95sm-3eFgMpk/s220/IMG_4490.jpeg',
+  name:'Hi, I\'m Pragati ✦',
+  bio:'Astrophysics student at Texas Tech University, fascinated by the universe and the forces that shape it. I write about cosmology, dark matter, quantum mechanics, and the mysteries of space-time. When I\'m not studying the cosmos, I enjoy reading & dancing.',
+  tagline:'where equations bloom like flowers',
+  footerSub:'every equation is a love letter to the universe'
+};
+
+function loadSettings(){
+  try{
+    var s=localStorage.getItem('CE_settings');
+    return s?Object.assign({},DEFAULT_SETTINGS,JSON.parse(s)):DEFAULT_SETTINGS;
+  }catch(e){return DEFAULT_SETTINGS;}
+}
+
+function load(){
+  try{
+    var r=localStorage.getItem('CE3_posts');
+    posts=r?JSON.parse(r):SEED.map(function(p){return Object.assign({},p);});
+  }catch(e){posts=SEED.map(function(p){return Object.assign({},p);});}
+
+  var s=loadSettings();
+  // avatar
+  var ac=document.getElementById('about-card');
+  var avatarHTML=s.avatarUrl
+    ?'<img class="avatar" src="'+esc(s.avatarUrl)+'" alt="'+esc(s.name)+'" onerror="this.style.display=\'none\'">'
+    :'<div class="avatar-placeholder">✦</div>';
+  ac.insertAdjacentHTML('afterbegin',avatarHTML);
+  document.getElementById('about-name').textContent=s.name;
+  document.getElementById('about-bio').innerHTML=s.bio;
+  document.getElementById('site-tagline').textContent=s.tagline;
+  document.getElementById('footer-sub').textContent=s.footerSub;
+}
+
+/* ══════════════════════
+   HELPERS
+══════════════════════ */
+function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''}
+function fmtDate(d){
+  if(!d)return'';
+  try{return new Date(d+'T12:00:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});}catch(e){return d;}
+}
+
+/* ══════════════════════
+   RENDER
+══════════════════════ */
+function render(){
+  var list=document.getElementById('posts-list');
+  var vis=activeFilter==='all'?posts:posts.filter(function(p){return getBucket(p.tag)===activeFilter;});
+  var labelMap={'all':'All Entries','universe':'The Universe','particles':'Particles & Forces','spacetime':'Space & Time','bigquestions':'Big Questions'};
+  document.getElementById('seclabel').textContent=labelMap[activeFilter]||'All Entries';
+  document.querySelectorAll('#mainnav a').forEach(function(a){
+    var m=(a.getAttribute('onclick')||'').match(/'([^']+)'/);
+    if(m)a.classList.toggle('active',m[1]===activeFilter);
+  });
+  if(!vis.length){
+    list.innerHTML='<p style="text-align:center;font-family:\'Lora\',serif;font-style:italic;color:var(--mid);font-size:1rem;padding:60px 0;">Nothing here yet — check back soon ✦</p>';
+    return;
+  }
+  var html='';
+  vis.forEach(function(p,i){
+    var artSVG=getArt(p.tag);
+    var delay=(i*.07+.08)+'s';
+    if(i===0&&activeFilter==='all'){
+      var visual=p.img
+        ?'<img src="'+esc(p.img)+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">'
+        :'<div class="pf-art">'+artSVG+'</div>';
+      html+='<div class="post-featured acc-'+p.color+'" style="animation-delay:'+delay+'" onclick="openR('+p.id+')">'+
+        '<div class="pf-left">'+
+          '<div class="p-tag">'+esc(p.tag)+'</div>'+
+          '<div class="p-date">'+fmtDate(p.date)+'</div>'+
+          '<h2 class="p-title">'+esc(p.title)+'</h2>'+
+          '<p class="p-excerpt">'+esc(p.excerpt)+'</p>'+
+          '<span class="p-more">Read full post →</span>'+
+        '</div>'+
+        '<div class="pf-right">'+visual+'</div>'+
+      '</div>';
+    }else{
+      var thumb=p.img?'<img class="pc-thumb" src="'+esc(p.img)+'" alt="">':'<div class="pc-art">'+artSVG+'</div>';
+      html+='<div class="post-divider"></div>'+
+        '<div class="post-card acc-'+p.color+'" style="animation-delay:'+delay+'" onclick="openR('+p.id+')">'+
+        thumb+'<div class="pc-body">'+
+          '<div class="p-tag">'+esc(p.tag)+'</div>'+
+          '<div class="p-date">'+fmtDate(p.date)+'</div>'+
+          '<h2 class="p-title" style="font-size:1.4rem">'+esc(p.title)+'</h2>'+
+          '<p class="p-excerpt">'+esc(p.excerpt)+'</p>'+
+          '<span class="p-more">Read full post →</span>'+
+        '</div></div>';
+    }
+  });
+  list.innerHTML=html;
+}
+
+/* ══════════════════════
+   READ MODAL
+══════════════════════ */
+function bodyToHTML(raw){
+  var lines=(raw||'').trim().split('\n');
+  var out='';var inUL=false;var firstP=true;
+  lines.forEach(function(ln){
+    var t=ln.trim();
+    if(!t){if(inUL){out+='</ul>';inUL=false;}return;}
+    if(t.startsWith('## ')){if(inUL){out+='</ul>';inUL=false;}out+='<span class="m-h">'+esc(t.slice(3))+'</span>';}
+    else if(t.startsWith('• ')||t.startsWith('* ')){if(!inUL){out+='<ul>';inUL=true;}out+='<li>'+esc(t.slice(2))+'</li>';}
+    else{if(inUL){out+='</ul>';inUL=false;}if(firstP){out+='<p class="lede">'+esc(t)+'</p>';firstP=false;}else out+='<p>'+esc(t)+'</p>';}
+  });
+  if(inUL)out+='</ul>';
+  return out;
+}
+function openR(id){
+  var p=posts.find(function(q){return q.id===id;});if(!p)return;
+  var artHTML='<div class="m-art">'+getArt(p.tag)+'</div>';
+  var visual=p.img?'<img class="m-img" src="'+esc(p.img)+'" alt="">':artHTML;
+  document.getElementById('rcontent').innerHTML=
+    '<div class="m-tag">'+esc(p.tag)+'</div>'+
+    '<div class="m-date">'+fmtDate(p.date)+'</div>'+
+    '<h2 class="m-title">'+esc(p.title)+'</h2>'+
+    visual+'<div class="m-body">'+bodyToHTML(p.body)+'</div>';
+  document.getElementById('rov').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeR(){document.getElementById('rov').classList.remove('open');document.body.style.overflow='';}
+function filterBucket(b){activeFilter=b;render();document.querySelector('main').scrollIntoView({behavior:'smooth'});}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeR();});
+load();render();
+</script>
+</body>
+</html>
