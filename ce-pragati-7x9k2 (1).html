@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmic Echoes — Admin</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Lora:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--rose:#c870a8;--mauve:#9878b8;--ink:#ede8f8;--soft:#c0b0d8;--mid:#8878a8;--border:rgba(200,170,240,.25);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#16112a;color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 55% at 8% 10%,rgba(140,80,200,.28) 0%,transparent 58%),
+    radial-gradient(ellipse 60% 70% at 93% 5%,rgba(80,120,210,.22) 0%,transparent 55%),
+    radial-gradient(ellipse 65% 50% at 50% 96%,rgba(180,80,160,.18) 0%,transparent 58%);}
+
+/* LOCK */
+#lockscreen{position:fixed;inset:0;z-index:999;background:rgba(10,5,25,.7);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:24px;}
+.lock-box{background:rgba(35,22,65,.95);border:1px solid rgba(200,170,240,.3);border-radius:24px;max-width:400px;width:100%;padding:48px 40px 44px;text-align:center;box-shadow:0 28px 90px rgba(100,60,180,.3);}
+.lock-logo{font-family:'Playfair Display',serif;font-weight:800;font-size:2rem;color:var(--ink);margin-bottom:6px;}
+.lock-logo em{font-style:italic;color:var(--rose);}
+.lock-sub{font-family:'Lora',serif;font-style:italic;font-size:.85rem;color:var(--mid);margin-bottom:32px;}
+.lock-label{font-size:.6rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--mauve);display:block;margin-bottom:8px;text-align:left;}
+.lock-input{width:100%;font-family:'Lora',serif;font-size:1rem;color:var(--ink);background:rgba(50,30,90,.6);border:1px solid rgba(200,170,240,.3);border-radius:12px;padding:12px 16px;outline:none;transition:border-color .2s;margin-bottom:20px;letter-spacing:.12em;text-align:center;}
+.lock-input:focus{border-color:var(--rose);}
+.lock-btn{width:100%;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;background:var(--rose);border:none;color:#fff;padding:12px;border-radius:50px;cursor:pointer;transition:background .25s;}
+.lock-btn:hover{background:var(--mauve);}
+.lock-err{font-size:.75rem;color:#e878b8;margin-top:12px;min-height:20px;font-family:'Lora',serif;font-style:italic;}
+
+/* ADMIN UI */
+#adminui{display:none;position:relative;z-index:10;}
+
+/* header */
+.admin-header{background:rgba(35,22,65,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(200,170,240,.2);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+.admin-brand{font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem;color:var(--ink);}
+.admin-brand em{font-style:italic;color:var(--rose);}
+.admin-brand small{font-family:'DM Sans',sans-serif;font-size:.6rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--mauve);margin-left:10px;}
+
+/* tabs */
+.tabs{display:flex;gap:6px;padding:20px 32px 0;position:relative;z-index:10;}
+.tab{font-family:'DM Sans',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:9px 20px;border-radius:12px 12px 0 0;border:1px solid rgba(200,170,240,.2);border-bottom:none;cursor:pointer;color:var(--soft);background:rgba(35,22,65,.5);transition:all .2s;}
+.tab.active{background:rgba(35,22,65,.92);color:var(--ink);border-color:rgba(200,170,240,.3);}
+.tab-panel{display:none;}.tab-panel.active{display:block;}
+
+/* body */
+.admin-body{max-width:1120px;margin:0 auto;padding:0 24px 80px;}
+.panel-wrap{background:rgba(35,22,65,.82);backdrop-filter:blur(14px);border:1px solid rgba(200,170,240,.2);border-radius:0 20px 20px 20px;overflow:hidden;}
+
+/* buttons */
+.btn{font-family:'DM Sans',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(200,170,240,.4);background:rgba(40,25,75,.6);color:var(--soft);padding:8px 20px;border-radius:50px;cursor:pointer;transition:all .25s;}
+.btn:hover,.btn-rose{background:var(--rose);border-color:var(--rose);color:#fff;}
+.btn-rose:hover{background:var(--mauve);border-color:var(--mauve);}
+.btn-outline{background:none;border:1px solid rgba(200,170,240,.35);color:var(--mid);}
+.btn-outline:hover{background:rgba(200,170,240,.1);color:var(--ink);}
+.btn-danger{background:none;border:1px solid rgba(200,112,168,.5);color:var(--rose);}
+.btn-danger:hover{background:rgba(200,112,168,.12);}
+
+/* POSTS TAB */
+.posts-layout{display:grid;grid-template-columns:1fr 380px;gap:0;align-items:start;}
+@media(max-width:860px){.posts-layout{grid-template-columns:1fr;}}
+
+.post-list-head{padding:20px 24px;border-bottom:1px solid rgba(200,170,240,.12);display:flex;align-items:center;justify-content:space-between;}
+.post-list-head h2{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--ink);}
+.post-list-head small{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mauve);}
+
+.post-row{padding:16px 24px;border-bottom:1px solid rgba(200,170,240,.08);display:flex;gap:14px;align-items:center;transition:background .2s;cursor:pointer;}
+.post-row:last-child{border-bottom:none;}
+.post-row:hover{background:rgba(200,170,240,.06);}
+.post-row.selected{background:rgba(200,112,168,.1);}
+.pr-tag{font-size:.56rem;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--rose);margin-bottom:3px;}
+.pr-title{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:4px;}
+.pr-bucket{font-size:.58rem;color:var(--mid);letter-spacing:.1em;}
+.pr-body{flex:1;min-width:0;}
+.pr-actions{display:flex;gap:6px;flex-shrink:0;}
+.pr-del{font-size:.56rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:4px 11px;border-radius:50px;cursor:pointer;border:1px solid rgba(200,112,168,.4);color:var(--rose);background:transparent;transition:all .2s;}
+.pr-del:hover{background:rgba(200,112,168,.15);}
+.pr-edit{font-size:.56rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:4px 11px;border-radius:50px;cursor:pointer;border:1px solid rgba(200,170,240,.3);color:var(--mauve);background:transparent;transition:all .2s;}
+.pr-edit:hover{background:var(--mauve);color:#fff;}
+.empty-state{padding:48px 24px;text-align:center;font-family:'Lora',serif;font-style:italic;color:var(--mid);font-size:.95rem;}
+
+/* EDITOR PANEL */
+.editor-panel{border-left:1px solid rgba(200,170,240,.12);position:sticky;top:0;}
+.editor-head{padding:20px 24px;border-bottom:1px solid rgba(200,170,240,.12);display:flex;align-items:center;justify-content:space-between;}
+.editor-head h2{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--ink);}
+.form-body{padding:20px 24px 8px;max-height:calc(100vh - 180px);overflow-y:auto;}
+
+/* form */
+.fr{margin-bottom:14px;}
+.fr label{display:block;font-size:.58rem;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--mauve);margin-bottom:6px;}
+.fr small{display:block;font-size:.66rem;color:var(--mid);opacity:.75;margin-top:3px;}
+.fr input,.fr textarea,.fr select{width:100%;font-family:'Lora',serif;font-size:.86rem;color:var(--ink);background:rgba(50,30,90,.55);border:1px solid rgba(180,140,220,.25);border-radius:10px;padding:9px 13px;outline:none;transition:border-color .2s,background .2s;}
+.fr input:focus,.fr textarea:focus,.fr select:focus{border-color:var(--rose);background:rgba(70,35,110,.55);}
+.fr textarea{resize:vertical;line-height:1.65;}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:480px){.f2{grid-template-columns:1fr;}}
+.sw-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px;}
+.sw{width:26px;height:26px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:border-color .2s,transform .2s;}
+.sw:hover{transform:scale(1.14);}
+.sw.on{border-color:var(--ink);}
+.form-actions{display:flex;gap:9px;padding:14px 24px 20px;flex-wrap:wrap;align-items:center;}
+.form-actions .spacer{flex:1;}
+
+/* SETTINGS TAB */
+.settings-body{padding:32px;}
+.settings-section{margin-bottom:36px;}
+.settings-section h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.settings-section .desc{font-family:'Lora',serif;font-style:italic;font-size:.82rem;color:var(--mid);margin-bottom:18px;line-height:1.6;}
+.photo-preview-row{display:flex;align-items:center;gap:18px;margin-bottom:14px;}
+.photo-preview{width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid rgba(200,170,240,.4);background:rgba(50,30,90,.5);flex-shrink:0;}
+.photo-preview-placeholder{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,rgba(140,80,200,.4),rgba(80,120,210,.4));display:flex;align-items:center;justify-content:center;font-size:1.8rem;border:3px solid rgba(200,170,240,.3);flex-shrink:0;}
+.photo-guide{background:rgba(50,30,90,.45);border:1px solid rgba(200,170,240,.2);border-radius:14px;padding:18px 20px;margin-top:14px;}
+.photo-guide h4{font-family:'DM Sans',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--mauve);margin-bottom:10px;}
+.photo-guide ol{margin-left:18px;}
+.photo-guide li{font-family:'Lora',serif;font-size:.82rem;line-height:1.75;color:var(--soft);margin-bottom:4px;}
+.photo-guide li a{color:var(--rose);text-decoration:none;}
+.photo-guide li a:hover{text-decoration:underline;}
+.settings-actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+
+/* bucket preview badge */
+.bucket-badge{display:inline-block;font-family:'DM Sans',sans-serif;font-size:.58rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;padding:3px 10px;border-radius:50px;border:1px solid rgba(200,170,240,.3);color:var(--mauve);margin-top:5px;}
+
+/* toast */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(35,22,65,.97);border:1px solid rgba(200,170,240,.35);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:500;letter-spacing:.14em;padding:11px 24px;border-radius:50px;opacity:0;transition:all .35s;pointer-events:none;z-index:9999;white-space:nowrap;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- LOCK -->
+<div id="lockscreen">
+  <div class="lock-box">
+    <div class="lock-logo">Cosmic <em>Echoes</em></div>
+    <div class="lock-sub">Admin — private access only</div>
+    <label class="lock-label" for="pwdinput">Password</label>
+    <input class="lock-input" type="password" id="pwdinput" placeholder="••••••••" onkeydown="if(event.key==='Enter')unlock()">
+    <button class="lock-btn" onclick="unlock()">Enter</button>
+    <div class="lock-err" id="lockerr"></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="adminui">
+  <div class="admin-header">
+    <div><div class="admin-brand">Cosmic <em>Echoes</em> <small>Admin</small></div></div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <a href="index.html" target="_blank"><button class="btn btn-outline">↗ View Site</button></a>
+      <button class="btn btn-rose" onclick="newPost()">＋ New Post</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('posts')">Posts</div>
+    <div class="tab" onclick="switchTab('settings')">Site Settings &amp; Photo</div>
+  </div>
+
+  <div class="admin-body">
+
+    <!-- POSTS TAB -->
+    <div id="tab-posts" class="tab-panel active">
+      <div class="panel-wrap">
+        <div class="posts-layout">
+          <div>
+            <div class="post-list-head">
+              <h2>All Posts</h2>
+              <small id="postcount"></small>
+            </div>
+            <div id="postlist"></div>
+          </div>
+          <div class="editor-panel">
+            <div class="editor-head">
+              <h2 id="editorhead">New Post</h2>
+            </div>
+            <div class="form-body">
+              <div class="fr">
+                <label>Tag / Topic</label>
+                <input id="f-tag" placeholder="e.g. Dark Matter, Quantum, Relativity…" oninput="updateBucketPreview()">
+                <div id="bucket-preview" class="bucket-badge" style="display:none"></div>
+              </div>
+              <div class="fr">
+                <label>Title ✱</label>
+                <input id="f-title" placeholder="Your post title">
+              </div>
+              <div class="fr">
+                <label>Date</label>
+                <input id="f-date" type="date">
+              </div>
+              <div class="fr">
+                <label>Short excerpt ✱ <span style="font-style:italic;opacity:.6">— homepage teaser</span></label>
+                <textarea id="f-excerpt" rows="3" placeholder="1–2 sentences to pull the reader in…"></textarea>
+              </div>
+              <div class="fr">
+                <label>Full article ✱ <span style="font-style:italic;opacity:.6">— the complete post</span></label>
+                <textarea id="f-body" rows="12" placeholder="Write your full article here.&#10;&#10;## Section heading&#10;&#10;Paragraph text.&#10;&#10;• Bullet item"></textarea>
+                <small>## Heading · blank line = paragraph · • bullet point</small>
+              </div>
+              <div class="fr">
+                <label>Image URL <span style="opacity:.6">(optional)</span></label>
+                <input id="f-img" placeholder="https://…">
+              </div>
+              <div class="f2">
+                <div class="fr">
+                  <label>Accent colour</label>
+                  <div class="sw-row">
+                    <div class="sw on" data-c="blush"  style="background:#c896dc" onclick="pickC(this)" title="Blush"></div>
+                    <div class="sw"    data-c="lav"    style="background:#9878b8" onclick="pickC(this)" title="Lav"></div>
+                    <div class="sw"    data-c="sky"    style="background:#5096dc" onclick="pickC(this)" title="Sky"></div>
+                    <div class="sw"    data-c="sage"   style="background:#50b4c8" onclick="pickC(this)" title="Sage"></div>
+                    <div class="sw"    data-c="peach"  style="background:#d0b8d8" onclick="pickC(this)" title="Peach"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-danger" id="fdelBtn" onclick="delPost()" style="display:none">🗑 Delete</button>
+              <div class="spacer"></div>
+              <button class="btn btn-outline" onclick="newPost()">Clear</button>
+              <button class="btn btn-rose" onclick="savePost()">Save post</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div id="tab-settings" class="tab-panel">
+      <div class="panel-wrap">
+        <div class="settings-body">
+
+          <!-- PHOTO SECTION -->
+          <div class="settings-section">
+            <h3>Your Profile Photo</h3>
+            <div class="desc">Update the photo shown in the "Hi, I'm Pragati" section on your site. Upload your photo anywhere free, then paste the link here.</div>
+            <div class="photo-preview-row">
+              <div id="photo-preview-box"><div class="photo-preview-placeholder">✦</div></div>
+              <div style="flex:1">
+                <div class="fr" style="margin:0">
+                  <label>Photo URL</label>
+                  <input id="s-avatar" placeholder="https://i.ibb.co/your-photo.jpg" oninput="previewPhoto()">
+                </div>
+              </div>
+            </div>
+            <div class="photo-guide">
+              <h4>How to upload your photo in 3 steps</h4>
+              <ol>
+                <li>Go to <a href="https://imgbb.com" target="_blank">imgbb.com</a> — it's free, no account needed</li>
+                <li>Click <strong>"Start uploading"</strong> and choose your photo from your phone or laptop</li>
+                <li>After it uploads, click <strong>"Copy BBCode"</strong> → then choose <strong>"Direct link"</strong> and copy that URL — it looks like <em>https://i.ibb.co/abc123/photo.jpg</em></li>
+              </ol>
+              <p style="font-family:'Lora',serif;font-size:.8rem;color:var(--mid);margin-top:10px;font-style:italic;">Paste that link into the "Photo URL" field above and hit Save Settings.</p>
+            </div>
+          </div>
+
+          <!-- BIO SECTION -->
+          <div class="settings-section">
+            <h3>About Section</h3>
+            <div class="desc">Update your name display and bio text.</div>
+            <div class="fr"><label>Display name</label><input id="s-name" placeholder="Hi, I'm Pragati ✦"></div>
+            <div class="fr"><label>Bio</label><textarea id="s-bio" rows="4" placeholder="A short intro about yourself…"></textarea></div>
+          </div>
+
+          <!-- TAGLINE -->
+          <div class="settings-section">
+            <h3>Taglines</h3>
+            <div class="fr"><label>Header tagline <span style="opacity:.6">(under the logo)</span></label><input id="s-tagline" placeholder="where equations bloom like flowers"></div>
+            <div class="fr"><label>Footer tagline</label><input id="s-footersub" placeholder="every equation is a love letter to the universe"></div>
+          </div>
+
+          <!-- BUCKET MAP -->
+          <div class="settings-section">
+            <h3>Category Buckets</h3>
+            <div class="desc">This is how your tags map to the broad nav buckets. Any new tag you use in a post will automatically go to "Big Questions" unless you add it here. You can edit this mapping anytime.</div>
+            <div class="fr"><label>Bucket map (JSON)</label>
+              <textarea id="s-bucketmap" rows="10" style="font-family:monospace;font-size:.78rem;"></textarea>
+              <small>Format: "Tag Name": "bucket" — buckets are: universe · particles · spacetime · bigquestions</small>
+            </div>
+          </div>
+
+          <div class="settings-actions">
+            <button class="btn btn-outline" onclick="loadSettingsForm()">Reset changes</button>
+            <button class="btn btn-rose" onclick="saveSettings()">Save all settings</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* PASSWORD — change this to your own */
+var PASSWORD='cosmicechoes2025';
+
+function unlock(){
+  // secret file — no URL check needed
+  var v=document.getElementById('pwdinput').value;
+  if(v===PASSWORD){
+    document.getElementById('lockscreen').style.display='none';
+    document.getElementById('adminui').style.display='block';
+    loadData();renderList();loadSettingsForm();
+  } else {
+    var e=document.getElementById('lockerr');
+    e.textContent='Incorrect password.';
+    document.getElementById('pwdinput').value='';
+    document.getElementById('pwdinput').focus();
+    setTimeout(function(){e.textContent='';},3000);
+  }
+}
+document.getElementById('pwdinput').addEventListener('keydown',function(e){if(e.key==='Enter')unlock();});
+
+
+/* TABS */
+function switchTab(t){
+  document.querySelectorAll('.tab').forEach(function(el,i){el.classList.toggle('active',['posts','settings'][i]===t);});
+  document.querySelectorAll('.tab-panel').forEach(function(el){el.classList.remove('active');});
+  document.getElementById('tab-'+t).classList.add('active');
+}
+
+/* DATA */
+var DEFAULT_SEED=[
+  {id:1,tag:'Dark Matter',color:'blush',date:'2025-07-11',title:'Is Dark Matter Real, or Are We Just Missing Something?',excerpt:"About 95% of the universe is made of something we can't see. We're almost certain it exists — yet we still don't know what it is.",img:'',body:'Full article — edit in admin panel.'},
+  {id:2,tag:'Cosmology',color:'lav',date:'2025-06-24',title:'Are Constants Really Constant?',excerpt:"We treat values like G, h, and π as fixed anchors of the universe. But are they actually constant?",img:'',body:'Full article — edit in admin panel.'},
+  {id:3,tag:'Relativity',color:'sky',date:'2025-06-15',title:'Time Dilation and Its Impact on Our Understanding of Reality',excerpt:"Time slows near massive objects — but it's not just clocks. Everything slows.",img:'',body:'Full article — edit in admin panel.'},
+  {id:4,tag:'Cosmology',color:'peach',date:'2025-06-08',title:'Why Do We Even Need the Big Bang?',excerpt:"We've never actually seen the Big Bang. So how can we be sure it happened?",img:'',body:'Full article — edit in admin panel.'},
+  {id:5,tag:'Cosmology',color:'sage',date:'2025-05-31',title:'"You Shouldn\'t Be Here — But You Are": 14 Cosmic Miracles',excerpt:"Our existence is astonishingly improbable. Here are 14 reasons to be amazed.",img:'',body:'Full article — edit in admin panel.'},
+  {id:6,tag:'Quantum',color:'lav',date:'2025-05-30',title:'Quantum Teleportation Simulated',excerpt:"Physicists simulated a 'baby wormhole' capable of transferring quantum information.",img:'',body:'Full article — edit in admin panel.'}
+];
+
+var DEFAULT_BUCKET_MAP={
+  'Dark Matter':'universe','Cosmology':'universe','Quantum':'particles',
+  'Relativity':'spacetime','Thermodynamics':'spacetime','Astrophysics':'universe',
+  'Nuclear':'particles','Philosophy':'bigquestions','Particle Physics':'particles',
+  'String Theory':'bigquestions','Consciousness':'bigquestions'
+};
+
+var DEFAULT_SETTINGS={
+  avatarUrl:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhu5J5fnM7H5txe3cIoHVT5EridNDUXDVPGLS88sADwcjJuBm8w-Stfo3SWR_e4ITvkLuSlSzzGk_Z7fCDEKrpwEwxtwFh4aFMgedWABinQRjKu9OiAJHAdSY6tKlyB-V9e5Ad_S90yUP2GpaLcIgwVg3QsVZBZBJVL2D_95sm-3eFgMpk/s220/IMG_4490.jpeg',
+  name:"Hi, I'm Pragati ✦",
+  bio:"Astrophysics student at Texas Tech University, fascinated by the universe and the forces that shape it. I write about cosmology, dark matter, quantum mechanics, and the mysteries of space-time. When I'm not studying the cosmos, I enjoy reading & dancing.",
+  tagline:'where equations bloom like flowers',
+  footerSub:'every equation is a love letter to the universe',
+  bucketMap:DEFAULT_BUCKET_MAP
+};
+
+var posts,nid,editingId=null,selColor='blush';
+
+function loadData(){
+  try{var r=localStorage.getItem('CE3_posts');posts=r?JSON.parse(r):DEFAULT_SEED.slice();var n=localStorage.getItem('CE3_nid');nid=n?parseInt(n):200;}
+  catch(e){posts=DEFAULT_SEED.slice();nid=200;}
+}
+function persist(){try{localStorage.setItem('CE3_posts',JSON.stringify(posts));localStorage.setItem('CE3_nid',nid);}catch(e){}}
+
+function getBucketLabel(tag){
+  var s=getSettings();var m=s.bucketMap||DEFAULT_BUCKET_MAP;
+  var b=m[tag]||'bigquestions';
+  var labels={'universe':'The Universe','particles':'Particles & Forces','spacetime':'Space & Time','bigquestions':'Big Questions'};
+  return labels[b]||'Big Questions';
+}
+
+/* SETTINGS */
+function getSettings(){
+  try{var r=localStorage.getItem('CE_settings');return r?Object.assign({},DEFAULT_SETTINGS,JSON.parse(r)):Object.assign({},DEFAULT_SETTINGS);}
+  catch(e){return Object.assign({},DEFAULT_SETTINGS);}
+}
+function loadSettingsForm(){
+  var s=getSettings();
+  document.getElementById('s-avatar').value=s.avatarUrl||'';
+  document.getElementById('s-name').value=s.name||'';
+  document.getElementById('s-bio').value=s.bio||'';
+  document.getElementById('s-tagline').value=s.tagline||'';
+  document.getElementById('s-footersub').value=s.footerSub||'';
+  document.getElementById('s-bucketmap').value=JSON.stringify(s.bucketMap||DEFAULT_BUCKET_MAP,null,2);
+  previewPhoto();
+}
+function saveSettings(){
+  var bucketMap;
+  try{bucketMap=JSON.parse(document.getElementById('s-bucketmap').value);}
+  catch(e){toast('Bucket map has a JSON error — check the format.');return;}
+  var s={
+    avatarUrl:document.getElementById('s-avatar').value.trim(),
+    name:document.getElementById('s-name').value.trim(),
+    bio:document.getElementById('s-bio').value.trim(),
+    tagline:document.getElementById('s-tagline').value.trim(),
+    footerSub:document.getElementById('s-footersub').value.trim(),
+    bucketMap:bucketMap
+  };
+  try{localStorage.setItem('CE_settings',JSON.stringify(s));toast('Settings saved ✓ — reload the site to see changes');}
+  catch(e){toast('Could not save settings.');}
+}
+function previewPhoto(){
+  var url=document.getElementById('s-avatar').value.trim();
+  var box=document.getElementById('photo-preview-box');
+  if(url){box.innerHTML='<img class="photo-preview" src="'+url+'" onerror="this.outerHTML=\'<div class=\\\"photo-preview-placeholder\\\">✦</div>\'">';}
+  else{box.innerHTML='<div class="photo-preview-placeholder">✦</div>';}
+}
+
+/* RENDER LIST */
+function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''}
+function fmtDate(d){if(!d)return'';try{return new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}catch(e){return d;}}
+
+function renderList(){
+  var el=document.getElementById('postlist');
+  document.getElementById('postcount').textContent=posts.length+' post'+(posts.length!==1?'s':'');
+  if(!posts.length){el.innerHTML='<div class="empty-state">No posts yet. Create your first one →</div>';return;}
+  el.innerHTML=posts.map(function(p){
+    return '<div class="post-row'+(editingId===p.id?' selected':'')+'" onclick="editPost('+p.id+')">'+
+      '<div class="pr-body">'+
+        '<div class="pr-tag">'+esc(p.tag)+'</div>'+
+        '<div class="pr-title">'+esc(p.title)+'</div>'+
+        '<div class="pr-bucket">→ '+getBucketLabel(p.tag)+' · '+fmtDate(p.date)+'</div>'+
+      '</div>'+
+      '<div class="pr-actions">'+
+        '<button class="pr-del" onclick="delPostById(event,'+p.id+')">✕</button>'+
+        '<button class="pr-edit" onclick="editPost('+p.id+')">Edit</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+/* BUCKET PREVIEW */
+function updateBucketPreview(){
+  var tag=document.getElementById('f-tag').value.trim();
+  var el=document.getElementById('bucket-preview');
+  if(!tag){el.style.display='none';return;}
+  el.style.display='inline-block';
+  el.textContent='→ '+getBucketLabel(tag);
+}
+
+/* EDITOR */
+function pickC(el){document.querySelectorAll('.sw').forEach(function(s){s.classList.remove('on');});el.classList.add('on');selColor=el.dataset.c;}
+function setC(c){selColor=c||'blush';document.querySelectorAll('.sw').forEach(function(s){s.classList.toggle('on',s.dataset.c===selColor);});}
+function fillForm(p){
+  document.getElementById('f-tag').value=p?p.tag:'';
+  document.getElementById('f-title').value=p?p.title:'';
+  document.getElementById('f-date').value=p?p.date:new Date().toISOString().slice(0,10);
+  document.getElementById('f-excerpt').value=p?p.excerpt:'';
+  document.getElementById('f-body').value=p?p.body:'';
+  document.getElementById('f-img').value=p?p.img:'';
+  setC(p?p.color:'blush');
+  updateBucketPreview();
+}
+function newPost(){
+  editingId=null;
+  document.getElementById('editorhead').textContent='New Post';
+  document.getElementById('fdelBtn').style.display='none';
+  fillForm(null);renderList();
+}
+function editPost(id){
+  var p=posts.find(function(q){return q.id===id;});if(!p)return;
+  editingId=id;
+  document.getElementById('editorhead').textContent='Editing';
+  document.getElementById('fdelBtn').style.display='inline-block';
+  fillForm(p);renderList();
+}
+function savePost(){
+  var title=document.getElementById('f-title').value.trim();
+  var excerpt=document.getElementById('f-excerpt').value.trim();
+  var body=document.getElementById('f-body').value.trim();
+  if(!title||!excerpt||!body){toast('Please fill in title, excerpt, and article body.');return;}
+  var entry={
+    tag:document.getElementById('f-tag').value.trim()||'Physics',
+    title:title,date:document.getElementById('f-date').value,
+    excerpt:excerpt,body:body,
+    img:document.getElementById('f-img').value.trim(),
+    color:selColor
+  };
+  if(editingId!==null){
+    var i=posts.findIndex(function(q){return q.id===editingId;});
+    if(i>-1)posts[i]=Object.assign({},posts[i],entry);
+    toast('Post updated ✓');
+  } else {
+    posts.unshift(Object.assign({id:nid++},entry));
+    toast('Post published ✓');
+  }
+  persist();newPost();
+}
+function delPost(){if(!editingId)return;delPostById(null,editingId);}
+function delPostById(e,id){
+  if(e)e.stopPropagation();
+  if(!confirm('Delete this post permanently?'))return;
+  posts=posts.filter(function(q){return q.id!==id;});
+  persist();
+  if(editingId===id)newPost();else renderList();
+  toast('Post deleted');
+}
+
+/* TOAST */
+var tt;
+function toast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){el.classList.remove('show');},3000);}
+</script>
+</body>
+</html>
